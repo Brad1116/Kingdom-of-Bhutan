@@ -2,22 +2,14 @@
 
 /* --- 全域變數設定 --- */
 :root {
-    /* 字體大小控制 */
     --card-title-size: 1.2rem;
     --card-content-size: 0.95rem;
-    
-    /* 下拉選單配色 */
     --select-bg-light: #e3e3e3;
     --select-bg-dark: #2d2d2d;
     --select-text-light: #333;
     --select-text-dark: #e0e0e0;
-
-    /* 卡片標籤顏色 (深藍色) */
     --label-color: #0d47a1; 
-    /* 卡片標籤背景 (極淺藍) */
     --label-bg-light: #eef6fc;
-
-    /* 系統背景色定義 (用於頭條漸變) */
     --system-bg-light: #f4f4f4;
     --system-bg-dark: #121212;
 }
@@ -26,7 +18,7 @@ body {
     font-family: 'Segoe UI', 'Microsoft JhengHei', Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--system-bg-light); /* 使用變數 */
+    background-color: var(--system-bg-light);
     color: #333;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -38,53 +30,49 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative; /* 確保 header 在最上層 */
+    position: relative; 
     z-index: 100;
 }
 
-/* --- 5. 首頁頭條區塊 (Hero Section) 全螢幕版 --- */
+/* --- 5. 首頁頭條區塊 (Hero Section) --- */
 .hero-banner {
-    /* 設定背景圖片為 atl_m_220022081_585.jpg */
+    /* 設定背景圖片 */
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('atl_m_220022081_585.jpg');
     background-size: cover;
     background-position: center;
+    /* 視差滾動效果：捲動時背景固定不動 */
+    background-attachment: fixed;
     
-    /* 全螢幕設定：寬度100%，高度至少為視窗高度 */
     width: 100%;
-    min-height: 100vh; 
+    min-height: 100vh; /* 保持全螢幕高度 */
     
-    /* 排版設定：Flexbox 讓內容垂直與水平置中 */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     
-    padding: 2rem;
-    box-sizing: border-box; /* 確保 padding 不會撐大寬度 */
+    /* 關鍵：下方增加內距，預留空間給 main 區塊蓋上來，避免擋住頭條文字 */
+    padding: 2rem 2rem 8rem 2rem; 
+    box-sizing: border-box;
     
     color: white; 
     text-align: center;
     position: relative;
     overflow: hidden;
     
-    /* 移除之前的圓角與 margin，達成滿版效果 */
-    border-radius: 0;
-    margin-bottom: 0; 
-    box-shadow: none;
+    z-index: 1; /* 層級比 main 低 */
 
-    /* 進場動畫設定 (1.5秒緩慢浮現) */
+    /* 進場動畫 */
     opacity: 0; 
     transform: translateY(20px); 
     transition: opacity 1.5s ease-out, transform 1.5s ease-out; 
 }
 
-/* 進場動畫最終狀態 */
 .hero-banner.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* 變色遮罩層 */
 .hero-overlay {
     position: absolute;
     top: 0;
@@ -98,11 +86,10 @@ header {
     will-change: opacity;
 }
 
-/* 頭條內容 */
 .hero-content {
     position: relative;
     z-index: 2; 
-    max-width: 800px; /* 限制文字寬度 */
+    max-width: 800px;
     width: 100%;
     margin: 0 auto;
     text-shadow: 0 2px 8px rgba(0,0,0,0.6);
@@ -123,7 +110,7 @@ header {
 }
 
 .hero-title {
-    font-size: 3.5rem; /* 標題加大 */
+    font-size: 3.5rem;
     margin: 0 0 1rem 0;
     font-weight: 800;
     letter-spacing: 2px;
@@ -150,7 +137,7 @@ header {
     display: inline-block;
     background-color: #ff5e00; 
     color: white;
-    padding: 15px 40px; /* 按鈕加大 */
+    padding: 15px 40px;
     border-radius: 50px;
     text-decoration: none;
     font-weight: bold;
@@ -166,16 +153,25 @@ header {
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-/* --- 主要內容區塊 (Main) --- */
+/* --- 主要內容區塊 (Main) 重疊特效 --- */
 main {
-    padding: 4rem 2rem; /* 增加上下間距 */
-    max-width: 800px;
-    margin: auto;
+    padding: 3rem 2rem;
+    max-width: 900px; 
+    margin: 0 auto 3rem auto; 
+    
+    /* 關鍵設定：向上位移 100px，蓋住圖片底部 */
+    margin-top: -100px; 
+    
     background-color: white;
-    /* 移除 margin-top，因為上面已經有全螢幕 Hero */
-    margin-top: 0; 
-    border-radius: 0; 
-    box-shadow: none; 
+    
+    /* 視覺優化：上方圓角 */
+    border-radius: 20px 20px 8px 8px;
+    
+    /* 關鍵設定：確保內容浮在圖片上方 */
+    position: relative; 
+    z-index: 10; 
+    
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.1); 
 }
 
 .disclaimer {
@@ -242,9 +238,14 @@ footer {
         display: block;
     }
     
-    /* 手機版字體調整 */
     .hero-title {
         font-size: 2.5rem;
+    }
+    
+    /* 手機版調整：減少重疊程度 */
+    main {
+        margin-top: -60px;
+        padding: 2rem 1.5rem;
     }
 }
 
@@ -405,8 +406,8 @@ body.dark-mode header {
 }
 
 body.dark-mode main {
-    background-color: #1e1e1e;
-    box-shadow: none;
+    background-color: #1e1e1e; /* 讓 main 在深色模式下有區別 */
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
 }
 
 body.dark-mode footer {
